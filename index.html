@@ -137,8 +137,7 @@
         $('#send_message').click(function(e){
             if($message.val() == ""){
                   e.preventDefault();
-                  $('.error').show();
-                  $('.error').fadeOut(3000);
+                  $('.error').show().fadeOut(3000);                  
                   $message.val('');
             }else{
                 e.preventDefault();
@@ -151,8 +150,7 @@
               // $("#buttontest").click();
               if($message.val() == ""){
                     e.preventDefault();
-                    $('.error').show();
-                    $('.error').fadeOut(3000);
+                    $('.error').show().fadeOut(3000);
                     $message.val('');
               }else{
                   e.preventDefault();
@@ -188,7 +186,7 @@
         $('#login_btn').click(function(e){
             if($('#username').val() == ''){
                 e.preventDefault();
-                $('.username_error').html('Please Enter username').css("float","right").show().fadeOut(2000);
+                $('.username_error').html('Please Enter username').show().fadeOut(2000);
             }else{
                 e.preventDefault();
                 socket.emit('new user', $username.val(), function(data){
@@ -204,7 +202,7 @@
             if(e.which == 13){
                 if($('#username').val() == ''){
                     e.preventDefault();
-                    $('.username_error').html('Please Enter username').css("float","right").show().fadeOut(3000);
+                    $('.username_error').html('Please Enter username').show().fadeOut(3000);
                 }else{
                     e.preventDefault();
                     socket.emit('new user', $username.val(), function(data){
