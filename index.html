@@ -123,6 +123,7 @@
                         <button type="submit" class="btn btn-default">Submit</button>
                     </form>
                 </div>
+
             </div>
         </nav>
 
@@ -133,14 +134,17 @@
             <div class="col-md-8 col-md-offset-2">
                 <h1 class="text-center">NodeJs Chat</h1>
                 <div class="col-md-12">
+
                     <form id="userForm" autocomplete="off">
                           <div class="form-group">
                             <label>User Name</label>
                             <input type="text" class="form-control" id="username" placeholder="Enter your name" autocomplete="off">
+                            <b><span class="username_error text-danger"></span></b>
                             <br/>
-                            <input type="submit" class="btn btn-primary" value="Login" />
+                            <input type="button" class="btn btn-primary" value="Enter ChatRoom" id="login_btn"/>
                           </div>
                     </form>
+
                 </div>
             </div>
             </div>
@@ -167,7 +171,7 @@
                               <input type="text" placeholder="Enter Message" name="" class="form-control" id="message" autocomplete="off">
                               <br/>
                               <input type="button" class="btn btn-primary" value="Send" id="send_message"/>
-                              <span class="error text-danger" style="display:none;">Please enter message</span>
+                              <b><span class="error text-danger" style="display:none;">Please enter message</span></b>
                               <span class="footer_tag"><b>Made with&nbsp;<i class="fa fa-heart faa-tada animated" style="color:#b4052c;"></i></b></span>
                         </div>
                   </form>
@@ -211,6 +215,7 @@
         //       $message.val('');
         //    });
 
+        //check on send button click
         $('#send_message').click(function(e){
             if($message.val() == ""){
                   e.preventDefault();
@@ -223,8 +228,6 @@
                 $message.val('');
             }
         });
-
-        //check on send button click
         $("#message").keydown(function(e){
           if(e.which == 13){
               // $("#buttontest").click();
@@ -253,16 +256,51 @@
         });
 
         // On User form submit
-        $userForm.submit(function(e){
-          e.preventDefault();
-          socket.emit('new user', $username.val(), function(data){
-              if(data){
-                $userFormArea.hide();
-                $messageArea.show();
-              }
-          });
-          $username.val('');
+        // $userForm.submit(function(e){
+        //   e.preventDefault();
+        //   socket.emit('new user', $username.val(), function(data){
+        //       if(data){
+        //         $userFormArea.hide();
+        //         $messageArea.show();
+        //       }
+        //   });
+        //   $username.val('');
+        // });
+
+        $('#login_btn').click(function(e){
+            if($('#username').val() == ''){
+                e.preventDefault();
+                $('.username_error').html('Please Enter username').css("float","right").show().fadeOut(2000);
+            }else{
+                e.preventDefault();
+                socket.emit('new user', $username.val(), function(data){
+                    if(data){
+                      $userFormArea.hide();
+                      $messageArea.show();
+                    }
+                });
+                $username.val('');
+            }
         });
+        $("#username").keydown(function(e){
+            if(e.which == 13){
+                if($('#username').val() == ''){
+                    e.preventDefault();
+                    $('.username_error').html('Please Enter username').css("float","right").show().fadeOut(3000);
+                }else{
+                    e.preventDefault();
+                    socket.emit('new user', $username.val(), function(data){
+                        if(data){
+                          $userFormArea.hide();
+                          $messageArea.show();
+                        }
+                    });
+                    $username.val('');
+                }
+            }
+        });
+
+
 
         // Getting users Data
         socket.on('get users', function(data){
