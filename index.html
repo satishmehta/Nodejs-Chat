@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Socket IO chat app</title>
+  <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"  > -->
+  <link href="css/bootwatch.css" rel="stylesheet" type="text/css" />
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="socket.io/socket.io.js"></script>
+  <style>
+    body{
+        margin-top: 0px
+    }
+    h3{
+        color: #fff;
+        text-align: center;
+        background: #cf6f11;
+        border-radius: 51px;
+        margin-top: 10px;
+    }
+    p{
+        font-size: 19px;
+    }
+    #messageArea{
+        display: none;
+    }
+    #chat{
+        margin-top: 10px;
+        overflow: auto;
+    }
+    #messageForm{
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        /*padding-top: 30px;*/
+        background-color: white;
+        /*height: 200px;*/
+    }
+
+    .list-group-item_custom{
+        color: #fff;
+        position: relative;
+        display: block;
+        padding: 8px 17px !important;
+        margin-bottom: -1px;
+        background-color: #fff3 !important;
+        background:  #fff3 !important;
+        border: 1px solid #4d6f6b !important;
+    }
+    .left-well-head{
+        margin-left: -15px;
+    }
+    .left-well{
+        background: #000;
+        padding: 19px;
+        overflow: auto;
+
+        border: 1px solid transparent;
+        border-radius: 3px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+
+    }
+    .chat-well{
+        background: #8DCFCA;
+        border-radius: 10px;
+        padding: 11px !important;
+    }
+    .left-pic{
+        clear: both;
+        float: left;
+        height: auto;
+        width: 54px;
+        text-align: center;
+        overflow: hidden;
+        margin-top: -5px;
+        margin-right: 10px;
+    }
+    .user-img{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+
+
+        <div id="userFormArea" class="row">
+            <div class="jumbotron">
+                <h1 class="text-center">HexChat</h1>
+                <div class="col-md-12">
+                    <form id="userForm" autocomplete="off">
+                          <div class="form-group">
+                            <label>User Name</label>
+                            <input type="text" class="form-control" id="username" placeholder="Enter your name" autocomplete="off">
+                            <br/>
+                            <input type="submit" class="btn btn-primary" value="Login" />
+                          </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="messageArea" class="row">
+            <div class="col-md-3 left-well-head">
+              <div class="left-well">
+                  <h3>Online Users</h3>
+                  <ul class="list-group" id="users">
+                        <!-- here user list will come -->
+                  </ul>
+              </div>
+            </div>
+
+            <div class="col-md-9">
+                  <div class="chat" id="chat">
+                       <!-- here chat will come -->
+                  </div>
+
+                  <form id="messageForm" autocomplete="off">
+                        <div class="form-group">
+                          <!-- <label>Enter Message</label> -->
+                          <input type="text" placeholder="Enter Message" name="" class="form-control" id="message" autocomplete="off">
+                          <br/>
+                          <input type="submit" class="btn btn-primary" value="Send" />
+                        </div>
+                  </form>
+              </div> <!-- /.col-md-8 -->
+          </div>
+          <div class="row">
+
+          </div>
+
+  </div><!-- /.row -->
+
+  <script>
+    $(document).ready(function(){
+        var tot_height= $(document).height() + "px";
+
+        $('.left-well').css("height",tot_height);
+
+        var chat_height= $(document).height() - 112 + "px";
+
+        $('#chat').css("height",chat_height);
+    });
+
+
+    $(function(){
+        //creating variable
+        var socket= io.connect();
+        var $messageForm= $('#messageForm');
+        var $message= $('#message');
+        var $chat = $('#chat');
+        var $messageArea = $('#messageArea');
+        var $userFormArea = $('#userFormArea');
+        var $userForm = $('#userForm');
+        var $users = $('#users');
+        var $username = $('#username');
+
+        // On Message form submit
+        $messageForm.submit(function(e){
+          e.preventDefault();
+          socket.emit('send message', $message.val());
+          $message.val('');
+        });
+
+        socket.on('new message',function(data){
+            var html_data='<div class="well chat-well">';
+             html_data += '<div class="left-pic"><img class="user-img" src="http://icons.iconarchive.com/icons/graphicloads/colorful-long-shadow/256/User-icon.png"> <strong>'+ data.user+'</strong></div> ';
+             html_data += '<p>'+ data.msg +'</p>';
+             html_data += '</div>';
+
+            $chat.append(html_data);
+            $(".chat").animate({scrollTop: $(document).height()+ 5000}, "slow");
+            $("#message").focus();
+        });
+
+        // On User form submit
+        $userForm.submit(function(e){
+          e.preventDefault();
+          socket.emit('new user', $username.val(), function(data){
+              if(data){
+                $userFormArea.hide();
+                $messageArea.show();
+              }
+          });
+          $username.val('');
+        });
+
+        // Getting users Data
+        socket.on('get users', function(data){
+            var html= '';
+            for(i=0 ; i < data.length ; i++){
+                html += '<li class="list-group-item list-group-item_custom"><i class="fa fa-circle text-success" aria-hidden="true"></i> &nbsp;'+ data[i] +'</li>';
+            }
+            $users.html(html);
+        });
+    });
+  </script>
+</body>
+</html>
