@@ -9,10 +9,10 @@ var io= require('socket.io').listen(server);
 users=[];
 connections =[];
 
-server.listen(process.env.PORT || 3003);
-console.log('Server is running on post no 3003');
+server.listen(process.env.PORT || 5000);
+console.log('Server is running on post no 5000');
 
-app.get('/my_chat',function(req,res){
+app.get('/',function(req,res){
   res.sendFile(__dirname + '/index.html');
 });
 

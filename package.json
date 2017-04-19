@@ -1,15 +1,27 @@
 {
-  "name": "my_chat",
+  "name": "mehtas-chat",
   "version": "1.0.0",
-  "description": "",
+  "description": "A sample Node.js app using Express for Chat application",
+  "engines": {
+    "node": "6.10.2"
+  },
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
-  "author": "Satish Mehta",
-  "license": "ISC",
   "dependencies": {
-    "express": "^4.15.2",
+    "express": "4.15.2",
     "socket.io": "^1.7.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/satishmehta/Nodejs-Chat.git"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express",
+    "socketio"
+  ],
+  "license": "MIT"
 }

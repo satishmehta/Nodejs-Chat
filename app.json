@@ -1,8 +1,7 @@
 {
   "name": "Chat app Heroku: Node.js",
   "description": "A mehtas Node.js chat app using Express 4",
-  "repository": "",
-  "logo": "http://node-js-sample.herokuapp.com/node.svg",
-  "keywords": ["node", "express", "heroku"],
+  "repository": "https://github.com/satishmehta/Nodejs-Chat.git",
+  "keywords": ["node", "express", "heroku","express"],
   "image": "heroku/nodejs"
 }
