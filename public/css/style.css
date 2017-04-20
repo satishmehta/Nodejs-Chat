@@ -105,3 +105,41 @@ p{
 .help a{
     margin-top: -10px;
 }
+
+
+@media only screen and (max-width:360px){
+    .left-well{
+        height: 200px !important;
+        position: relative;
+        width: 100%;
+    }
+    .left-well h3{
+        color: #fff;
+        text-align: center;
+        background: #2c3e50;
+        border-radius: 51px;
+        margin-top: -10px;
+        font-size: 15px;
+        padding: 3px;
+    }
+    .left-well-head{
+        display: none;
+        padding-right: 0px !important;
+    }
+    .list-group-item_custom{
+        color: #fff;
+        position: relative;
+        display: block;
+        padding: 0px 2px !important;
+        margin-bottom: -1px;
+        background-color: #000 !important;
+        border: 1px solid #000 !important;
+    }
+    #messageForm{
+        width:92%;
+    }
+    .chat{
+        margin-bottom: 112px;
+    }
+
+}

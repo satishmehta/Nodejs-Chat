@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Socket IO chat app</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2c3e50" />
+  <title>MS-Node Js chat app</title>
   <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"  > -->
   <link href="css/bootwatch.css" rel="stylesheet" type="text/css" />
   <link href="css/style.css" rel="stylesheet" type="text/css" />
@@ -15,7 +17,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" id="well-toggle" data-target="#navbar-collapse-well">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -70,7 +72,7 @@
 
         <div id="messageArea" class="row">
             <div class="col-md-3 left-well-head">
-              <div class="left-well">
+              <div class="left-well" id="navbar-collapse-well">
                   <h3>Online Users</h3>
                   <ul class="list-group" id="users">
                         <!-- here user list will come -->
@@ -112,6 +114,10 @@
         $('#chat').css("height",chat_height);
     });
 
+    $('#well-toggle').on('click',function(){
+        $('.left-well-head').slideToggle();
+    });
+
 
     $(function(){
         //creating variable
@@ -137,7 +143,7 @@
         $('#send_message').click(function(e){
             if($message.val() == ""){
                   e.preventDefault();
-                  $('.error').show().fadeOut(3000);                  
+                  $('.error').show().fadeOut(3000);
                   $message.val('');
             }else{
                 e.preventDefault();
